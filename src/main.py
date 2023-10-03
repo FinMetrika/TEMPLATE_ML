@@ -1,5 +1,8 @@
 import sys
 import logging
+import random
+import numpy as np
+import torch
 from config import ProjectConfig
 from utils import update_config
 
@@ -17,6 +20,14 @@ def main():
     update_config(FLAGS)
     logging.info(f"Configuration: {FLAGS}")
 
+    # Random seeds
+    seed = FLAGS.seed
+    random.seed(seed)  # python 
+    np.random.seed(seed)  # numpy
+    torch.manual_seed(seed)  # torch
+    if torch.cuda.is_available():
+        torch.cuda.manual_seed_all(seed)  # torch.cuda
+        
 
 
 

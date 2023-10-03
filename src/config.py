@@ -3,6 +3,8 @@ from pathlib import Path
 
 @dataclass
 class ProjectConfig:
+    seed: int=123
+    
     data_dir_path: Path=Path("../input/")
     output_dir_path: Path=Path("../output/")
     models_dir_path: Path=Path("../models/")
