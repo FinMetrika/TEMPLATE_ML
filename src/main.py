@@ -1,6 +1,5 @@
-import os
-import logging
-import random
+import os, logging, random
+from datetime import datetime
 import numpy as np
 import torch
 from config import ProjectConfig
@@ -15,6 +14,8 @@ logging.basicConfig(filename="program_log.txt",
 
 #################################
 def main():
+    stime = datetime.now()
+    
     # Instantiate the config dataclass
     FLAGS = ProjectConfig()
     utils.update_config(FLAGS)
@@ -35,8 +36,16 @@ def main():
     # Create a file with the description and experiment parameters
     utils.create_experiment_descr_file(FLAGS)
     
+    # ===== MAIN CODE =====
 
 
+
+
+
+    # ===== END OF MAIN CODE =====
+    # Update the experiment_info.txt file
+    utils.add_runtime_experiment_info(stime, FLAGS)
+    
 if __name__ == '__main__':
     #logging.info(f"Program started with arguments: {FLAGS}")
     main()

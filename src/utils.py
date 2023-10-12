@@ -1,5 +1,5 @@
-import sys
-import logging
+import sys, logging
+from datetime import datetime
 import torch
 from config import ProjectConfig
 
@@ -38,6 +38,7 @@ def check_device():
 
     return device
 
+
 def create_experiment_descr_file(config: ProjectConfig):
     """Create a txt file to include information on
     experiment including all the parameters used.
@@ -49,7 +50,7 @@ def create_experiment_descr_file(config: ProjectConfig):
     exp_description, exp_params = config.export_params()
     
     # Where to create the file
-    file_path = config.dir_experiments/"experiment_info.txt"
+    file_path = config.dir_experiments/config.experiment_version/"experiment_info.txt"
     
     with open(file_path, "w") as f:
         f.write(f'EXPERIMENT DESCRIPTION:\n{exp_description}\
@@ -59,3 +60,11 @@ def create_experiment_descr_file(config: ProjectConfig):
             if key not in ["experiment_version",
                            "experiment_description"]:
                 f.write(f"{key}:{value}\n")
+
+
+def add_runtime_experiment_info(start_time, config:ProjectConfig):
+    exp_file_path = config.dir_experiments/config.experiment_version/"experiment_info.txt"
+    end_time = datetime.now()
+    dtime = end_time-start_time
+    with open(exp_file_path, "a") as f:
+        f.write(f'\nTIME END: {end_time.strftime("%Y-%m-%d %H:%M:%S")}\nRUN TIME: {dtime}')
