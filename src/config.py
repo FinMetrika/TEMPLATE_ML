@@ -1,15 +1,26 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, asdict
 from pathlib import Path
 
 @dataclass
 class ProjectConfig:
-    seed: int=123
+    experiment_version: str="v0"            # name of the training experiment
+    experiment_description: str="This is proba."
     
-    data_dir_path: Path=Path("../input/")
-    output_dir_path: Path=Path("../output/")
-    models_dir_path: Path=Path("../models/")
-    model_name_hf: str="meta-llama/Llama-2-7b-hf"
-    proba: str='proba'
+    # General settings
+    dir_input: Path=Path("./input/")        # path of the input data
+    dir_output: Path=Path("./output/")      # path to save training results
+    dir_experiments: Path=Path("./output/experiments")
+    verbose: bool=True                      # True: print all the statments
+    seed: int=123                           # Random seed for training
+    
+    
+    # Model parameters
+    
+    # Export parameters
+    def export_params(self):
+        exp_description = self.experiment_description
+        exp_parameters = asdict(self)
+        return exp_description, exp_parameters
 
 
 # from argparse import ArgumentParser

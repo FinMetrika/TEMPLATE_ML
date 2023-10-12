@@ -37,3 +37,25 @@ def check_device():
         print(f'Using {device} device!')
 
     return device
+
+def create_experiment_descr_file(config: ProjectConfig):
+    """Create a txt file to include information on
+    experiment including all the parameters used.
+
+    Args:
+        config (ProjectConfig): project parameters
+    """
+    # Get the parameters
+    exp_description, exp_params = config.export_params()
+    
+    # Where to create the file
+    file_path = config.dir_experiments/"experiment_info.txt"
+    
+    with open(file_path, "w") as f:
+        f.write(f'EXPERIMENT DESCRIPTION:\n{exp_description}\
+            \n\nMODEL PARAMETERS:\n')
+        for key, value in exp_params.items():
+            # Exclude already used information
+            if key not in ["experiment_version",
+                           "experiment_description"]:
+                f.write(f"{key}:{value}\n")

@@ -1,10 +1,10 @@
-import sys
+import os
 import logging
 import random
 import numpy as np
 import torch
 from config import ProjectConfig
-from utils import update_config
+import utils
 
 
 logging.basicConfig(filename="program_log.txt",
@@ -17,7 +17,7 @@ logging.basicConfig(filename="program_log.txt",
 def main():
     # Instantiate the config dataclass
     FLAGS = ProjectConfig()
-    update_config(FLAGS)
+    utils.update_config(FLAGS)
     logging.info(f"Configuration: {FLAGS}")
 
     # Random seeds
@@ -28,7 +28,13 @@ def main():
     if torch.cuda.is_available():
         torch.cuda.manual_seed_all(seed)  # torch.cuda
         
-
+    # Create a folder for the experiment if there is None
+    if not os.path.isdir(FLAGS.dir_experiments/FLAGS.experiment_version):
+        os.mkdir(FLAGS.dir_experiments/FLAGS.experiment_version)
+    
+    # Create a file with the description and experiment parameters
+    utils.create_experiment_descr_file(FLAGS)
+    
 
 
 if __name__ == '__main__':
