@@ -18,6 +18,9 @@ class ProjectConfig:
     
     # Export parameters
     def export_params(self):
+        """Export parameters used for a particular experiment
+        so that it can be added into log documents.
+        """
         exp_description = self.experiment_description
         exp_parameters = asdict(self)
         return exp_description, exp_parameters
