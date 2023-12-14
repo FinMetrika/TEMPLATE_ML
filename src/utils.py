@@ -16,8 +16,7 @@ def set_all_seeds(seed):
     torch.manual_seed(seed)  # torch
     if torch.cuda.is_available():
         torch.cuda.manual_seed_all(seed)  # torch.cuda
-    if torch.mps.is_available():
-        torch.mps.manual_seed(seed)     # mps
+    torch.mps.manual_seed(seed) # mps
 
 
 def update_config(FLAGS):
