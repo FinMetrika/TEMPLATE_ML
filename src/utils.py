@@ -1,7 +1,23 @@
-import sys, logging, platform
+import sys, logging, platform, random
 from datetime import datetime
+import numpy as np
 import torch
 from config import ProjectConfig
+
+
+def set_all_seeds(seed):
+    """Set the seed for all packages.
+
+    Args:
+        seed (int): Positive integer value.
+    """
+    random.seed(seed)  # python 
+    np.random.seed(seed)  # numpy
+    torch.manual_seed(seed)  # torch
+    if torch.cuda.is_available():
+        torch.cuda.manual_seed_all(seed)  # torch.cuda
+    if torch.mps.is_available():
+        torch.mps.manual_seed(seed)     # mps
 
 
 def update_config(FLAGS):
