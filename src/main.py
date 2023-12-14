@@ -22,12 +22,7 @@ def main():
     logging.info(f"Configuration: {FLAGS}")
 
     # Random seeds
-    seed = FLAGS.seed
-    random.seed(seed)  # python 
-    np.random.seed(seed)  # numpy
-    torch.manual_seed(seed)  # torch
-    if torch.cuda.is_available():
-        torch.cuda.manual_seed_all(seed)  # torch.cuda
+    utils.set_all_seeds(FLAGS.seed)
         
     # Create a folder for the experiment if there is None
     if not os.path.isdir(FLAGS.dir_experiments/FLAGS.experiment_version):
