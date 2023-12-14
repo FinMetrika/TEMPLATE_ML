@@ -1,4 +1,4 @@
-import sys, logging
+import sys, logging, platform
 from datetime import datetime
 import torch
 from config import ProjectConfig
@@ -38,6 +38,17 @@ def check_device():
 
     return device
 
+def get_python_version():
+    return sys.version.split()[0]
+
+
+def get_package_version(package_name):
+    try:
+        package = __import__(package_name)
+        return package.__version__
+    except ImportError:
+        return "Not Installed"
+    
 
 def create_experiment_descr_file(config: ProjectConfig):
     """Create a txt file to include information on
@@ -68,3 +79,9 @@ def add_runtime_experiment_info(start_time, config:ProjectConfig):
     dtime = end_time-start_time
     with open(exp_file_path, "a") as f:
         f.write(f'\nTIME END: {end_time.strftime("%Y-%m-%d %H:%M:%S")}\nRUN TIME: {dtime}')
+        f.write(f'\n\nPython Version: {get_python_version()}')
+        f.write(f'\nOS: {platform.system()} {platform.release()}')
+        f.write(f'\nTorch Version: {get_package_version("torch")}')
+        f.write(f'\nTransformers Version: {get_package_version("transformers")}')
+        f.write(f'\nNumPy Version: {get_package_version("numpy")}')
+        f.write(f'\nPandas Version: {get_package_version("pandas")}')
