@@ -11,8 +11,8 @@ class ProjectConfig:
     experiment_description: str="This is proba."
     
     # General settings
-    dir_input: Path=Path("./input/")        # path of the input data
-    dir_output: Path=Path("./output/")      # path to save training results
+    dir_input: Path=BASE_DIR / "input"        # path of the input data
+    dir_output: Path=BASE_DIR / "output"      # path to save training results
     dir_experiments: Path=Path("./output/experiments")
     verbose: bool=True                      # True: print all the statments
     seed: int=123                           # Random seed for training
