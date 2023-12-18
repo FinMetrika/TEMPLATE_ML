@@ -1,6 +1,10 @@
 from dataclasses import dataclass, asdict
 from pathlib import Path
 
+
+# Get the absolute path to the directory where config.py is located
+BASE_DIR = Path(__file__).resolve().parent.parent
+
 @dataclass
 class ProjectConfig:
     experiment_version: str="v0"            # name of the training experiment
