@@ -53,6 +53,49 @@ def check_device():
 
     return device
 
+
+def moveTo(obj:list, device:str):
+    """Move an object to a specified device if the object if of certain type.
+    Ref: Inside Deep Learning by E. Raff (page 15)
+    Args:
+        obj (list): list of Python objects
+        device (str): the compute device to move objects to
+        
+    Examples:
+        some_tensors = [torch.tensor(1), torch.tensor(2)] 
+        print(some_tensors) 
+        print(moveTo(some_tensors, device)) 
+        [tensor(1), tensor(2)]
+        [tensor(1, device='cuda:0'), tensor(2, device='cuda:0')]
+    
+    Explanation of the example:
+        This is a recursive algorithm. It takes in a list of objects,
+        in this case a list of tensors, so a first isinstance is envoked.
+        Then it return a list comprehension which iterated over each
+        element in a list and applies the same recursive algorithm, i.e. 
+        it starts to check again. Now since we have a tensor, it is not a list,
+        a tuple, a set or a dict, but a tensor which has a "to" method, and hence
+        it returns obj.to(device) and sends it to a device specified.
+        The base for this recursive algorithm is that i is neither of the above
+        and returns the initial object unchanged.
+    """
+    if isinstance(obj, list): 
+        return [moveTo(x, device) for x in obj] 
+    elif isinstance(obj, tuple): 
+        return tuple(moveTo(list(obj), device)) 
+    elif isinstance(obj, set): 
+        return set(moveTo(list(obj), device)) 
+    elif isinstance(obj, dict): 
+        to_ret = dict() 
+        for key, value in obj.items(): 
+            to_ret[moveTo(key, device)] = moveTo(value, device) 
+        return to_ret 
+    elif hasattr(obj, "to"): 
+        return obj.to(device) 
+    else: 
+        return obj
+
+
 def get_python_version():
     return sys.version.split()[0]
 
