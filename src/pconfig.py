@@ -1,4 +1,4 @@
-from dataclasses import dataclass, asdict
+from dataclasses import dataclass, asdict, field
 from pathlib import Path
 
 
@@ -7,19 +7,41 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 @dataclass
 class ProjectConfig:
-    experiment_version: str="v0"            # name of the training experiment
-    experiment_description: str="This is proba."
+    # Documenting experiments
+    experiment_version: str = field(
+        default="v0",
+        metadata={'description': "Name of the training experiment"})
+    
+    experiment_description: str = field(
+        default="This is test run",
+        metadata={'description': "Describe the experiment in couple of sentences"})
     
     # General settings
-    dir_input: Path=BASE_DIR / "input"        # path of the input data
-    dir_output: Path=BASE_DIR / "output"      # path to save training results
+    # General settings
+    dir_input: Path = field(default_factory = lambda: BASE_DIR / "input")       # path of the input data
+    dir_data: Path = field(default_factory=Path('/Users/icdonev/Developer/datasets/bank-trx/input/'))
+    dir_output: Path = field(default_factory=lambda: BASE_DIR / "output")      # path to save training results
+    dir_models: Path = field(default_factory=lambda: BASE_DIR / "models")
     dir_experiments: Path=Path("./output/experiments")
+    
     verbose: bool=True                      # True: print all the statments
     seed: int=123                           # Random seed for training
-    
-    
+      
     # Model parameters
     
+    
+    def __post_init__(self):
+        directories = [
+            self.dir_input,
+            self.dir_models,
+            self.dir_output,
+            self.dir_experiments
+        ]
+        for directory in directories:
+            if not os.path.exists(directory):
+                directory.mkdir(parents=True, exist_ok=True)
+
+
     # Export parameters
     def export_params(self):
         """Export parameters used for a particular experiment
