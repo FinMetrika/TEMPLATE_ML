@@ -2,8 +2,8 @@ import os, logging, random
 from datetime import datetime
 import numpy as np
 import torch
-from config import ProjectConfig
-import utils
+from src.pconfig import ProjectConfig
+from finmetrika_ml import utils
 
 
 logging.basicConfig(filename="program_log.txt",
